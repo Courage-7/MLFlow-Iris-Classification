@@ -1555,10 +1555,12 @@ name = "mlflow-iris"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "fastapi" },
     { name = "mlflow" },
     { name = "pandas" },
     { name = "scikit-learn", version = "1.7.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "scikit-learn", version = "1.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "uvicorn" },
 ]
 
 [package.optional-dependencies]
@@ -1570,10 +1572,12 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0" },
+    { name = "fastapi", specifier = ">=0.100.0" },
     { name = "mlflow", specifier = ">=3.0" },
     { name = "pandas", specifier = ">=1.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "scikit-learn", specifier = ">=1.0" },
+    { name = "uvicorn", specifier = ">=0.20.0" },
 ]
 provides-extras = ["dev"]
 
