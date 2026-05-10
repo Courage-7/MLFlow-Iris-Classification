@@ -24,3 +24,6 @@ dev = [
 train-autolog = "iris.training.autolog:train_with_autolog"
 train-manual = "iris.training.manual:train_with_manual_logging"
 predict = "iris.inference.predictor:run_inference"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/iris"]

@@ -53,11 +53,11 @@ tests/                       # Unit tests
 Clone the repository and install the required dependencies:
 
 ```bash
-# Using uv (faster)
-uv pip install -r requirements.txt
+# Using uv (recommended - uses the locked dependencies)
+uv sync
 
-# Or using pip
-pip install -r requirements.txt
+# Or using pip (installs latest compatible versions)
+pip install -e .
 ```
 
 ### 2. Train the Model
@@ -67,13 +67,13 @@ You can choose between two training pipelines to see different ways MLflow can t
 **Option A: Manual Logging**
 Manually logs specific metrics (like accuracy) and parameters.
 ```bash
-python pipelines/train_manual.py
+uv run pipelines/train_manual.py
 ```
 
 **Option B: Autologging**
 Automatically logs the model, parameters, and training metrics without explicit logging code.
 ```bash
-python pipelines/train_autolog.py
+uv run pipelines/train_autolog.py
 ```
 
 ### 3. Track Experiments in MLflow
@@ -81,7 +81,7 @@ python pipelines/train_autolog.py
 Once you have trained the model, launch the MLflow UI to inspect the runs, compare parameters, and view the logged models:
 
 ```bash
-mlflow ui
+uv run mlflow ui
 ```
 Open your browser and navigate to `http://127.0.0.1:5000` to view the MLflow dashboard.
 
@@ -90,7 +90,7 @@ Open your browser and navigate to `http://127.0.0.1:5000` to view the MLflow das
 To run inference on new data, use the `predict.py` pipeline. You will need to provide the MLflow model URI (you can find this in the MLflow UI after running a training script, or use the latest run).
 
 ```bash
-python pipelines/predict.py --model-uri "models:/iris_model"
+uv run pipelines/predict.py --model-uri "models:/iris_model"
 ```
 *(Note: Replace the URI with the exact model path if not using the model registry).*
 
