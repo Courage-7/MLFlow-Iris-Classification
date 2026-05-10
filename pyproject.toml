@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mlflow-iris"
+version = "0.1.0"
+description = "Iris flower classification with MLflow tracking"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mlflow>=3.0",
+    "scikit-learn>=1.0",
+    "pandas>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+]
+
+[project.scripts]
+train-autolog = "iris.training.autolog:train_with_autolog"
+train-manual = "iris.training.manual:train_with_manual_logging"
+predict = "iris.inference.predictor:run_inference"
