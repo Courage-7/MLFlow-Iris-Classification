@@ -1,5 +1,6 @@
 # loader.py — Load and split the Iris dataset
 
+import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
@@ -9,8 +10,12 @@ from iris.utils.logging import setup_logging
 logger = setup_logging(__name__)
 
 
-def load_data():
-    """Load the Iris dataset and return train/test splits."""
+def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Load the Iris dataset and return train/test splits.
+
+    Returns:
+        Tuple of (X_train, X_test, y_train, y_test) as numpy arrays.
+    """
     logger.info("Loading Iris dataset...")
     X, y = load_iris(return_X_y=True)
     logger.info(f"Dataset loaded: {X.shape[0]} samples, {X.shape[1]} features")
