@@ -14,12 +14,14 @@ dependencies = [
     "pandas>=1.0",
     "fastapi>=0.100.0",
     "uvicorn>=0.20.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
     "black>=23.0",
+    "httpx>=0.24.0",
 ]
 
 [project.scripts]
@@ -30,3 +32,7 @@ serve-api = "iris.api.app:start"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/iris"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
