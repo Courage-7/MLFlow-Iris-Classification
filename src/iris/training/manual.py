@@ -4,25 +4,26 @@ import mlflow
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-from iris.config import EXPERIMENT_NAME, PARAMS, TRACKING_URI
+from iris.config import (
+    EXPERIMENT_NAME,
+    PARAMS,
+    REGISTERED_MODEL_NAME,
+    TRACKING_URI,
+    configure_mlflow,
+)
 from iris.data.loader import load_data
 from iris.utils.logging import setup_logging
 
 logger = setup_logging(__name__)
 
 
-def train_with_manual_logging():
+def train_with_manual_logging() -> None:
     """Train model with explicit MLflow logging and skops serialization."""
     logger.info("Starting manual training with MLflow logging...")
 
-    if TRACKING_URI:
-        logger.info(f"Setting tracking URI to: {TRACKING_URI}")
-        mlflow.set_tracking_uri(TRACKING_URI)
-    else:
-        logger.info("Using local tracking (mlruns/)")
-
+    logger.info(f"Setting tracking URI to: {TRACKING_URI}")
     logger.info(f"Setting experiment: {EXPERIMENT_NAME}")
-    mlflow.set_experiment(EXPERIMENT_NAME)
+    configure_mlflow()
 
     logger.info("Loading data...")
     X_train, X_test, y_train, y_test = load_data()
@@ -38,11 +39,22 @@ def train_with_manual_logging():
         lr.fit(X_train, y_train)
         logger.info("Training complete!")
 
-        logger.info("Logging model with skops format (safer serialization)...")
+        logger.info(
+            "Logging and registering model with skops format "
+            f"as {REGISTERED_MODEL_NAME}..."
+        )
         model_info = mlflow.sklearn.log_model(
-            sk_model=lr, name="iris_model", serialization_format="skops"
+            sk_model=lr,
+            name="iris_model",
+            serialization_format="skops",
+            registered_model_name=REGISTERED_MODEL_NAME,
         )
         logger.info(f"Model logged: {model_info.model_uri}")
+        if model_info.registered_model_version is not None:
+            logger.info(
+                "Registered model URI: "
+                f"models:/{REGISTERED_MODEL_NAME}/{model_info.registered_model_version}"
+            )
 
         logger.info("Evaluating model on test set...")
         y_pred = lr.predict(X_test)
@@ -61,6 +73,11 @@ def train_with_manual_logging():
         logger.info("\n=== RUN SUMMARY ===")
         logger.info(f"Run ID: {run.info.run_id}")
         logger.info(f"Model URI: {model_info.model_uri}")
+        if model_info.registered_model_version is not None:
+            logger.info(
+                "Registered Model URI: "
+                f"models:/{REGISTERED_MODEL_NAME}/{model_info.registered_model_version}"
+            )
         for name, value in metrics.items():
             logger.info(f"  {name}: {value:.4f}")
 

@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model-uri",
         required=True,
-        help="MLflow model URI, e.g. models:/iris_model",
+        help="MLflow model URI, e.g. models:/iris-logistic-regression/1",
     )
     args = parser.parse_args()
     run_inference(args.model_uri)
