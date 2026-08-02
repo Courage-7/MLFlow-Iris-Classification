@@ -227,7 +227,7 @@ docker run -p 8000:8000 \
   iris-api
 ```
 
-## 🧪 Testing
+## Testing
 
 Run the full test suite with:
 
